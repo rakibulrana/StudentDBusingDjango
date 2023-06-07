@@ -1,8 +1,5 @@
 from django.shortcuts import render
-
-
-def index(request):
-    return render(request, 'index.html')
+from .models import StudentDataBase
 
 
 def insertStudentData(request):
@@ -14,4 +11,16 @@ def insertStudentData(request):
 
         print(name, email, age, gender)
 
+        query = StudentDataBase(name=name, email=email, age=age, gender=gender)
+        query.save()
+
     return render(request, 'index.html')
+
+
+def index(request):
+    # get the data from DB and show that in font-end
+    student_data = StudentDataBase.objects.all()  # Retrieve all student records from the database
+
+    context = {'student_data': student_data}  # Create a context dictionary and add the students data
+
+    return render(request, 'index.html', context)  # Render the template with the context data
