@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import StudentDataBase
 
 
@@ -24,3 +24,26 @@ def index(request):
     context = {'student_data': student_data}  # Create a context dictionary and add the students data
 
     return render(request, 'index.html', context)  # Render the template with the context data
+
+
+def updateData(request, id):
+    # we will take the index function conditions to perform our tasks.
+    if request.method == "POST":
+        name = request.POST['name']
+        email = request.POST['email']
+        age = request.POST['age']
+        gender = request.POST['gender']
+
+        edit = StudentDataBase.objects.get(id=id)  # we will filter the particular data with the id, so get id!
+        edit.name = name  # whatever we done in the edit part has to to follow and save there
+        edit.email = email
+        edit.age = age
+        edit.gender = gender
+        edit.save()  # save the entire edit thing
+
+        return redirect("/")  # and redirect to the home!
+
+    d = StudentDataBase.objects.get(
+        id=id)  # to filer the particular data the query would be the line and filtered by id!
+    context = {'d': d}  # we must have to change the student dictionary and its variable names
+    return render(request, 'update.html', context)  # refer to newly created edit.html page
