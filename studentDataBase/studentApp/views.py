@@ -47,3 +47,10 @@ def updateData(request, id):
         id=id)  # to filer the particular data the query would be the line and filtered by id!
     context = {'d': d}  # we must have to change the student dictionary and its variable names
     return render(request, 'update.html', context)  # refer to newly created edit.html page
+
+
+def deleteData(request, id):
+    # filtered the request by ID
+    d = StudentDataBase.objects.get(id=id)
+    d.delete()      #delete
+    return redirect("/")    #redirect the homepage
